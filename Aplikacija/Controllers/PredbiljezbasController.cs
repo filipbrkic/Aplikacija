@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Aplikacija.Data;
+using Aplikacija.Models;
+
 
 namespace Aplikacija.Controllers
 {
