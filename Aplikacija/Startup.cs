@@ -1,7 +1,10 @@
 using Aplikacija.Data;
 using Aplikacija.Models;
+using JavaScriptEngineSwitcher.V8;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
@@ -9,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using React.AspNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,14 +32,18 @@ namespace Aplikacija
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AplikacijaContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
+
+               services.AddIdentity<IdentityUser, IdentityRole>()
+              .AddEntityFrameworkStores<AplikacijaContext>()
+               .AddDefaultTokenProviders();
 
             services.AddRazorPages();
 
             services.AddControllersWithViews();
+
+            services.AddDbContext<AplikacijaContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
