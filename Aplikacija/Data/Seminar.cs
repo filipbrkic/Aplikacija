@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Aplikacija.Data
 {
-    public partial class Seminar
+    public class Seminar
     {
+        [Key]
         public int IdSeminar { get; set; }
 
         public string Naziv { get; set; }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Aplikacija.Data
 {
-    public partial class Zaposlenik
+    public class Zaposlenik
     {
+        [Key]
         public int IdZaposlenik { get; set; }
 
         public string Ime { get; set; }
