@@ -16,5 +16,7 @@ namespace Aplikacija.Data
         public DateTime Datum { get; set; }
 
         public bool Popunjen { get; set; }
+
+        public virtual ICollection<Predbiljezba> Predbiljezbas { get; set; }
     }
 }

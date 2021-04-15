@@ -24,5 +24,7 @@ namespace Aplikacija.Data
         public int IdSeminar { get; set; }
 
         public bool Status { get; set; }
-    }
+
+        public virtual Seminar Seminar { get; set; }
+}
 }
