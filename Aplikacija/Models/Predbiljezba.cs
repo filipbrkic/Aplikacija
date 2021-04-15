@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Aplikacija.Data
+namespace Aplikacija.Models
 {
     public class Predbiljezba
     {
