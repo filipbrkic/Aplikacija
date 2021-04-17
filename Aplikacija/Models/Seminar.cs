@@ -11,10 +11,12 @@ namespace Aplikacija.Models
         [Key]
         public int IdSeminar { get; set; }
 
+        [Required]
         public string Naziv { get; set; }
 
         public string Opis { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime Datum { get; set; }
 
         public bool Popunjen { get; set; }
