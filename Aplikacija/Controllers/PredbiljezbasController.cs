@@ -45,9 +45,16 @@ namespace Aplikacija.Controllers
         }
 
         // GET: Predbiljezbas/Create
-        public IActionResult Create()
+        public IActionResult Create([FromRoute]int idSaminara)
         {
-            return View();
+            var predbiljezba = new Predbiljezba()
+            {
+                IdSeminar = idSaminara,
+                Ime = "ime",
+                Prezime = "prezime",
+                Email = "email"
+            };
+            return View(predbiljezba);
         }
 
      /*   // POST: Predbiljezbas/Create/5
