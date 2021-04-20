@@ -13,6 +13,9 @@
     <thead>
         <tr>
             <th>
+
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Naziv)
             </th>
             <th>
@@ -31,6 +34,9 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                <a asp-controller="Predbiljezbas" asp-action="Create" asp-route-id="@item.IdSeminar">Predbiljezi se</a>
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Naziv)
             </td>
             <td>
@@ -39,9 +45,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Datum)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Popunjen)
-            </td>
+            @if (item.Popunjen)
+            {
+                <td>Popunjen</td>
+            }
+            else
+            {
+                <td>Slobodan</td>
+            }
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdSeminar">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.IdSeminar">Details</a> |

@@ -57,9 +57,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Telefon)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
+            @if (item.Status)
+            {
+                <td>Prihvacen</td>
+            }
+            else
+            {
+                <td>Odbijen</td>
+            }
+               @*@Html.DisplayFor(modelItem => item.Status)*@ 
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdPredbiljezba">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.IdPredbiljezba">Details</a> |

@@ -50,6 +50,12 @@ namespace Aplikacija.Controllers
             return View();
         }
 
+     /*   // POST: Predbiljezbas/Create/5
+        public IActionResult Create(int idSeminar)
+        {
+            return View(idSeminar);
+        } */
+
         // POST: Predbiljezbas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

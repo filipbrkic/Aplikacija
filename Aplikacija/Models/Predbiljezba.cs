@@ -27,7 +27,7 @@ namespace Aplikacija.Models
         public string Adresa { get; set; }
 
         [Required]
-        [EmailAddress(ErrorMessage ="Invalid Email Adress")]
+        [EmailAddress(ErrorMessage = "Invalid Email Adress")]
         public string Email { get; set; }
 
         [Required]
@@ -37,6 +37,6 @@ namespace Aplikacija.Models
 
         public bool Status { get; set; }
 
-       public virtual Seminar Seminar { get; set; }
-}
+        public virtual Seminar Seminar { get; set; }
+    }
 }
