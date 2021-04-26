@@ -12,9 +12,9 @@ namespace Aplikacija.Controllers
 {
     public class ZaposleniksController : Controller
     {
-        private readonly AplikacijaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public ZaposleniksController(AplikacijaContext context)
+        public ZaposleniksController(ApplicationDbContext context)
         {
             _context = context;
         }

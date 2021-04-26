@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Aplikacija.Migrations
 {
-    [DbContext(typeof(AplikacijaContext))]
+    [DbContext(typeof(ApplicationDbContext))]
     partial class AplikacijaContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

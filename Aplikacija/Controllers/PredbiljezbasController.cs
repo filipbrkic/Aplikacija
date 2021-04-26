@@ -13,9 +13,9 @@ namespace Aplikacija.Controllers
 {
     public class PredbiljezbasController : Controller
     {
-        private readonly AplikacijaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PredbiljezbasController(AplikacijaContext context)
+        public PredbiljezbasController(ApplicationDbContext context)
         {
             _context = context;
         }

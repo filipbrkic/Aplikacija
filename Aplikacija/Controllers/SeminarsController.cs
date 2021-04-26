@@ -13,9 +13,9 @@ namespace Aplikacija.Controllers
 {
     public class SeminarsController : Controller
     {
-        private readonly AplikacijaContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public SeminarsController(AplikacijaContext context)
+        public SeminarsController(ApplicationDbContext context)
         {
             _context = context;
         }
