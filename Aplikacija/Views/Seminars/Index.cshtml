@@ -32,6 +32,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Popunjen)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BrojPrijavljenih)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -58,11 +61,19 @@
             {
                 <td>Slobodan</td>
             }
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.IdSeminar">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.IdSeminar">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.IdSeminar">Delete</a>
-        </td>
+            @*     @if (item.BrojPrijavljenih > 2)
+        {
+            <td>Nema slobodnih mjesta</td>
+        }
+        else
+        {
+            <td>Ima slobodnih mjesta</td>
+        } *@
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdSeminar">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdSeminar">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdSeminar">Delete</a>
+            </td>
         </tr>
 }
     </tbody>

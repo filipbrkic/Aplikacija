@@ -21,6 +21,8 @@ namespace Aplikacija.Models
 
         public bool Popunjen { get; set; }
 
+        public int BrojPrijavljenih { get; set; }
+
         public virtual ICollection<Predbiljezba> Predbiljezbas { get; set; }
     }
 }
