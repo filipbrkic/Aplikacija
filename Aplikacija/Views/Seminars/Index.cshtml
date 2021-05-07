@@ -9,11 +9,19 @@
 <p>
     <a asp-action="Create">Create New</a>
     @*<div>
-        <input />
-    <a asp-action="Get" asp-route-id="">Pretraga</a>
+            <input />
+        <a asp-action="Get" asp-route-id="">Pretraga</a>
 
-    </div>*@
+        </div>*@
 </p>
+@* <from method="get">
+    <div class="input-group">
+        <input class="form-control" asp-for="SearchTerm" />
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Pretrazi</button>
+        </div>
+    </div>
+</from>*@
 <table class="table">
     <thead>
         <tr>
@@ -39,42 +47,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-controller="Predbiljezbas" asp-action="Create" asp-route-idSeminara="@item.IdSeminar">Predbiljezi se</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Naziv)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Opis)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Datum)
-            </td>
-            @if (item.Popunjen)
-            {
-                <td>Popunjen</td>
-            }
-            else
-            {
-                <td>Slobodan</td>
-            }
-            @*     @if (item.BrojPrijavljenih > 2)
+        @foreach (var item in Model)
         {
-            <td>Nema slobodnih mjesta</td>
+            <tr>
+                <td>
+                    <a asp-controller="Predbiljezbas" asp-action="Create" asp-route-idSeminara="@item.IdSeminar">Predbiljezi se</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Naziv)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Opis)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Datum)
+                </td>
+                @if (item.Popunjen)
+                {
+                    <td>Popunjen</td>
+                }
+                else
+                {
+                    <td>Slobodan</td>
+                }
+                @*     @if (item.BrojPrijavljenih > 2)
+                    {
+                        <td>Nema slobodnih mjesta</td>
+                    }
+                    else
+                    {
+                        <td>Ima slobodnih mjesta</td>
+                    } *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.IdSeminar">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.IdSeminar">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.IdSeminar">Delete</a>
+                </td>
+            </tr>
         }
-        else
-        {
-            <td>Ima slobodnih mjesta</td>
-        } *@
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdSeminar">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdSeminar">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdSeminar">Delete</a>
-            </td>
-        </tr>
-}
     </tbody>
 </table>
