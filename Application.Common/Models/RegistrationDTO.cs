@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Application.MVC.Models
+namespace Application.Common.Models
 {
-    public class RegistrationViewModel
+    public class RegistrationDTO
     {
         public int Id { get; set; }
         public DateTime DateTime { get; set; }

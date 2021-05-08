@@ -1,3 +1,4 @@
+using Application.MVC.Mapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +30,8 @@ namespace Application.MVC
             services.AddControllersWithViews();
 
             services.AddRazorPages();
+
+            services.AddAutoMapper(typeof(ModelMappings));
 
             services.Configure<IdentityOptions>(options =>
             {

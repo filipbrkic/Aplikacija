@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Application.MVC.Models
+﻿namespace Application.Common.Models
 {
-    public class EmployeeViewModel
+    public class EmployeeDTO
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
