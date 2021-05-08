@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Aplikacija.Service
+namespace Application.MVC.Models
 {
-    public class seminarService
+    public class SeminarViewModel
     {
-
     }
 }
