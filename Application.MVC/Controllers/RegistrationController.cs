@@ -1,10 +1,10 @@
 ﻿using Application.Common.Models;
 using Application.MVC.Models;
-using Application.Service;
 using Application.Service.Common;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,26 +30,28 @@ namespace Application.MVC.Controllers
         }
 
         // GET: RegistrationController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> Details(Guid id)
         {
             var result = await registrationService.GetAsync(id);
             return View();
         }
 
         // GET: RegistrationController/Create
-        public async Task<ActionResult> Create(RegistrationViewModel registrationViewModel)
+        public ActionResult Add(Guid seminarId)
         {
-            var result = await registrationService.AddAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
+            ViewBag.SeminarId = seminarId;
             return View();
         }
 
         // POST: RegistrationController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Add(RegistrationViewModel registrationViewModel)
         {
             try
             {
+                //registrationViewModel.SeminarId = (Guid)ViewBag.SeminarId;
+                await registrationService.AddAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
                 return RedirectToAction(nameof(Registration));
             }
             catch
@@ -59,7 +61,7 @@ namespace Application.MVC.Controllers
         }
 
         // GET: RegistrationController/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(Guid id)
         {
             var result = await registrationService.GetAsync(id);
             return View();
@@ -81,19 +83,19 @@ namespace Application.MVC.Controllers
         }
 
         // GET: RegistrationController/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var result = await registrationService.DeleteAsync(id);
             return View();
         }
 
         // POST: RegistrationController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(RegistrationViewModel registrationViewModel)
         {
             try
             {
+                var result = await registrationService.DeleteAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
                 return RedirectToAction(nameof(Registration));
             }
             catch

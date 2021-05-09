@@ -1,10 +1,10 @@
 ﻿using Application.Common.Models;
 using Application.MVC.Models;
-using Application.Service;
 using Application.Service.Common;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,26 +30,26 @@ namespace Application.MVC.Controllers
         }
 
         // GET: EmployeeController/Details/5
-        public async Task<ActionResult> Details(int id)
+        public async Task<ActionResult> Details(Guid id)
         {
             var result = await employeeService.GetAsync(id);
             return View();
         }
 
         // GET: EmployeeController/Create
-        public async Task<ActionResult> Create(EmployeeViewModel employeeViewModel)
+        public ActionResult Add()
         {
-            var result = await employeeService.AddAsync(mapper.Map<EmployeeDTO>(employeeViewModel));
             return View();
         }
 
         // POST: EmployeeController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Add(EmployeeViewModel employeeViewModel)
         {
             try
             {
+                await employeeService.AddAsync(mapper.Map<EmployeeDTO>(employeeViewModel));
                 return RedirectToAction(nameof(Employee));
             }
             catch
@@ -59,7 +59,7 @@ namespace Application.MVC.Controllers
         }
 
         // GET: EmployeeController/Edit/5
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(Guid id)
         {
             var result = await employeeService.GetAsync(id);
             return View();
@@ -81,19 +81,19 @@ namespace Application.MVC.Controllers
         }
 
         // GET: EmployeeController/Delete/5
-        public async Task<ActionResult> Delete(int id)
+        public ActionResult Delete(int id)
         {
-            var result = await employeeService.DeleteAsync(id);
             return View();
         }
 
         // POST: EmployeeController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(EmployeeViewModel employeeViewModel)
         {
             try
             {
+                var result = await employeeService.DeleteAsync(mapper.Map<EmployeeDTO>(employeeViewModel));
                 return RedirectToAction(nameof(Employee));
             }
             catch

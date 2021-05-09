@@ -6,7 +6,7 @@ namespace Application.DAL.Models
     public class Registration
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
@@ -28,7 +28,7 @@ namespace Application.DAL.Models
         [Required]
         public string Phone { get; set; }
 
-        public int SeminarId { get; set; }
+        public Guid SeminarId { get; set; }
 
         public bool Status { get; set; }
 

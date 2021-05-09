@@ -2,6 +2,7 @@
 using Application.DAL.Models;
 using Application.Repository.Common;
 using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,12 +21,17 @@ namespace Application.Repository
 
         public async Task<int> AddAsync(SeminarDTO entity)
         {
-            return await genericRepository.AddAsync(entity);
+            entity.Id = Guid.NewGuid();
+            return await genericRepository.AddAsync(mapper.Map<Seminar>(entity));
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(Guid id)
         {
             return await genericRepository.DeleteAsync<Seminar>(id);
+        }
+        public async Task<int> DeleteAsync(SeminarDTO entity)
+        {
+            return await genericRepository.DeleteAsync(mapper.Map<Seminar>(entity));
         }
 
         public async Task<IEnumerable<SeminarDTO>> GetAllAsync()
@@ -33,14 +39,14 @@ namespace Application.Repository
             return mapper.Map<IEnumerable<SeminarDTO>>(await genericRepository.GetAllAsync<Seminar>());
         }
 
-        public async Task<SeminarDTO> GetAsync(int id)
+        public async Task<SeminarDTO> GetAsync(Guid id)
         {
             return mapper.Map<SeminarDTO>(await genericRepository.GetAsync<Seminar>(id));
         }
 
         public async Task<int> UpdateAsync(SeminarDTO entity)
         {
-            return await genericRepository.UpdateAsync(entity);
+            return await genericRepository.UpdateAsync(mapper.Map<Seminar>(entity));
         }
     }
 }

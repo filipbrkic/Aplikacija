@@ -1,6 +1,7 @@
 ﻿using Application.Common.Models;
 using Application.Repository.Common;
 using Application.Service.Common;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,9 +21,13 @@ namespace Application.Service
             return await registrationRepository.AddAsync(entity);
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(Guid id)
         {
             return await registrationRepository.DeleteAsync(id);
+        }
+        public async Task<int> DeleteAsync(RegistrationDTO entity)
+        {
+            return await registrationRepository.DeleteAsync(entity);
         }
 
         public async Task<IEnumerable<RegistrationDTO>> GetAllAsync()
@@ -30,7 +35,7 @@ namespace Application.Service
             return await registrationRepository.GetAllAsync();
         }
 
-        public async Task<RegistrationDTO> GetAsync(int id)
+        public async Task<RegistrationDTO> GetAsync(Guid id)
         {
             return await registrationRepository.GetAsync(id);
         }

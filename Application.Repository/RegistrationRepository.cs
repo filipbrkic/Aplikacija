@@ -2,6 +2,7 @@
 using Application.DAL.Models;
 using Application.Repository.Common;
 using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -20,12 +21,17 @@ namespace Application.Repository
 
         public async Task<int> AddAsync(RegistrationDTO entity)
         {
-            return await genericRepository.AddAsync(entity);
+            entity.Id = Guid.NewGuid();
+            return await genericRepository.AddAsync(mapper.Map<Registration>(entity));
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(Guid id)
         {
             return await genericRepository.DeleteAsync<Registration>(id);
+        }
+        public async Task<int> DeleteAsync(RegistrationDTO entity)
+        {
+            return await genericRepository.DeleteAsync(mapper.Map<Registration>(entity));
         }
 
         public async Task<IEnumerable<RegistrationDTO>> GetAllAsync()
@@ -33,7 +39,7 @@ namespace Application.Repository
             return mapper.Map<IEnumerable<RegistrationDTO>>(await genericRepository.GetAllAsync<Registration>());
         }
 
-        public async Task<RegistrationDTO> GetAsync(int id)
+        public async Task<RegistrationDTO> GetAsync(Guid id)
         {
             return mapper.Map<RegistrationDTO>(await genericRepository.GetAsync<Registration>(id));
         }

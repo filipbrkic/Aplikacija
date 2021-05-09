@@ -1,5 +1,6 @@
 ﻿using Application.Repository.Common;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -42,7 +43,7 @@ namespace Application.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<T> GetAsync<T>(int id) where T : class
+        public async Task<T> GetAsync<T>(Guid id) where T : class
         {
             return await dbContext.Set<T>().FindAsync(id);
         }
@@ -65,12 +66,17 @@ namespace Application.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync<T>(int id) where T : class
+        public async Task<int> DeleteAsync<T>(Guid id) where T : class
         {
             var entity = await GetAsync<T>(id);
             dbContext.Set<T>().Remove(entity);
             return await dbContext.SaveChangesAsync();
         }
 
+        public async Task<int> DeleteAsync<T>(T entity) where T : class
+        {
+            dbContext.Set<T>().Remove(entity);
+            return await dbContext.SaveChangesAsync();
+        }
     }
 }
