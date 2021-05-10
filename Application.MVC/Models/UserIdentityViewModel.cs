@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Application.MVC.Models
 {
-    public class EmployeeViewModel
+    public class UserIdentityViewModel
     {
         public Guid Id { get; set; }
 

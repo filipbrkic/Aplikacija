@@ -9,10 +9,10 @@ namespace Application.MVC.Mapper
     {
         public ModelMappings()
         {
-            CreateMap<Employee, EmployeeDTO>().ReverseMap();
+            CreateMap<UserIdentity, UserIdentityDTO>().ReverseMap();
             CreateMap<Registration, RegistrationDTO>().ReverseMap();
             CreateMap<Seminar, SeminarDTO>().ReverseMap();
-            CreateMap<EmployeeDTO, EmployeeViewModel>().ReverseMap();
+            CreateMap<UserIdentityDTO, UserIdentityViewModel>().ReverseMap();
             CreateMap<RegistrationDTO, RegistrationViewModel>().ReverseMap();
             CreateMap<SeminarDTO, SeminarViewModel>().ReverseMap();
         }

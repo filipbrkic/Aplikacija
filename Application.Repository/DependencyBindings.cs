@@ -7,7 +7,7 @@ namespace Application.Repository
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IUserIdentityRepository, UserIdentityRepository>();
             services.AddTransient<ISeminarRepository, SeminarRepository>();
             services.AddTransient<IRegistrationRepository, RegistrationRepository>();
             services.AddTransient<IGenericRepository, GenericRepository>();

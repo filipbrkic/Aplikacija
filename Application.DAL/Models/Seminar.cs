@@ -19,6 +19,7 @@ namespace Application.DAL.Models
 
         public int ParticipantsCount { get; set; }
 
+        public UserIdentity User { get; set; }
         public virtual ICollection<Registration> Registrations { get; set; }
     }
 }

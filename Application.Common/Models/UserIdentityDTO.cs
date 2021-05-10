@@ -2,7 +2,7 @@
 
 namespace Application.Common.Models
 {
-    public class EmployeeDTO
+    public class UserIdentityDTO
     {
         public Guid Id { get; set; }
         public string FirstName { get; set; }

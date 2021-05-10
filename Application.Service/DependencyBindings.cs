@@ -7,7 +7,7 @@ namespace Application.Service
     {
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IUserIdentityService, UserIdentityService>();
             services.AddTransient<ISeminarService, SeminarService>();
             services.AddTransient<IRegistrationService, RegistrationService>();
         }
