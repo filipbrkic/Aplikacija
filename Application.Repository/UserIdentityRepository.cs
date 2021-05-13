@@ -42,7 +42,7 @@ namespace Application.Repository
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)
         {
-            return mapper.Map<UserIdentityDTO>(await genericRepository.GetAsync<UserIdentity>(id));
+            return mapper.Map<UserIdentityDTO>(await genericRepository.GetUserAsync<UserIdentity>(id.ToString()));
         }
 
         public async Task<int> UpdateAsync(UserIdentityDTO entity)

@@ -10,23 +10,43 @@ using System.Threading.Tasks;
 
 namespace Application.MVC.Controllers
 {
-    public class UserIdentityController : Controller
+    public class UserController : Controller
     {
         private readonly IMapper mapper;
         private readonly IUserIdentityService userIdentityService;
 
-        public UserIdentityController(IMapper mapper, IUserIdentityService UserIdentityService)
+        public UserController(IMapper mapper, IUserIdentityService UserIdentityService)
         {
             this.mapper = mapper;
-            this.userIdentityService = UserIdentityService;
+            userIdentityService = UserIdentityService;
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(UserViewModel userViewModel)
+        {
+            try
+            {
+                await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
+                return RedirectToAction(nameof(Users));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // GET: UserIdentityController
-        [HttpGet("useridentity", Name = "get-useridentity")]
-        public async Task<ActionResult> UserIdentity()
+        [HttpGet]
+        public async Task<ActionResult> Users()
         {
             var result = await userIdentityService.GetAllAsync();
-            return View(mapper.Map<IEnumerable<UserIdentityViewModel>>(result));
+            return View(mapper.Map<IEnumerable<UserViewModel>>(result));
         }
 
         // GET: UserIdentityController/Details/5
@@ -45,12 +65,12 @@ namespace Application.MVC.Controllers
         // POST: UserIdentityController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(UserIdentityViewModel userIdentityViewModel)
+        public async Task<ActionResult> Add(UserViewModel userViewModel)
         {
             try
             {
-                await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userIdentityViewModel));
-                return RedirectToAction(nameof(UserIdentity));
+                await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
+                return RedirectToAction(nameof(Users));
             }
             catch
             {
@@ -72,7 +92,7 @@ namespace Application.MVC.Controllers
         {
             try
             {
-                return RedirectToAction(nameof(UserIdentity));
+                return RedirectToAction(nameof(Users));
             }
             catch
             {
@@ -89,12 +109,12 @@ namespace Application.MVC.Controllers
         // POST: UserIdentityController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Delete(UserIdentityViewModel userIdentityViewModel)
+        public async Task<ActionResult> Delete(UserViewModel userViewModel)
         {
             try
             {
-                var result = await userIdentityService.DeleteAsync(mapper.Map<UserIdentityDTO>(userIdentityViewModel));
-                return RedirectToAction(nameof(UserIdentity));
+                var result = await userIdentityService.DeleteAsync(mapper.Map<UserIdentityDTO>(userViewModel));
+                return RedirectToAction(nameof(Users));
             }
             catch
             {

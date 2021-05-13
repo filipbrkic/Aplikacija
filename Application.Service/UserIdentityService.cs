@@ -9,41 +9,41 @@ namespace Application.Service
 {
     public class UserIdentityService : IUserIdentityService
     {
-        private readonly IUserIdentityRepository UserIdentityRepository;
+        private readonly IUserIdentityRepository userIdentityRepository;
 
-        public UserIdentityService(IUserIdentityRepository UserIdentityRepository)
+        public UserIdentityService(IUserIdentityRepository userIdentityRepository)
         {
-            this.UserIdentityRepository = UserIdentityRepository;
+            this.userIdentityRepository = userIdentityRepository;
         }
 
         public async Task<int> AddAsync(UserIdentityDTO entity)
         {
-            return await UserIdentityRepository.AddAsync(entity);
+            return await userIdentityRepository.AddAsync(entity);
         }
 
         public async Task<int> DeleteAsync(Guid id)
         {
-            return await UserIdentityRepository.DeleteAsync(id);
+            return await userIdentityRepository.DeleteAsync(id);
         }
 
         public async Task<int> DeleteAsync(UserIdentityDTO entity)
         {
-            return await UserIdentityRepository.DeleteAsync(entity);
+            return await userIdentityRepository.DeleteAsync(entity);
         }
 
         public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync()
         {
-            return await UserIdentityRepository.GetAllAsync();
+            return await userIdentityRepository.GetAllAsync();
         }
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)
         {
-            return await UserIdentityRepository.GetAsync(id);
+            return await userIdentityRepository.GetAsync(id);
         }
 
         public async Task<int> UpdateAsync(UserIdentityDTO entity)
         {
-            return await UserIdentityRepository.UpdateAsync(entity);
+            return await userIdentityRepository.UpdateAsync(entity);
         }
     }
 }

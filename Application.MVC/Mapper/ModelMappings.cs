@@ -12,7 +12,7 @@ namespace Application.MVC.Mapper
             CreateMap<UserIdentity, UserIdentityDTO>().ReverseMap();
             CreateMap<Registration, RegistrationDTO>().ReverseMap();
             CreateMap<Seminar, SeminarDTO>().ReverseMap();
-            CreateMap<UserIdentityDTO, UserIdentityViewModel>().ReverseMap();
+            CreateMap<UserIdentityDTO, UserViewModel>().ReverseMap();
             CreateMap<RegistrationDTO, RegistrationViewModel>().ReverseMap();
             CreateMap<SeminarDTO, SeminarViewModel>().ReverseMap();
         }

@@ -49,6 +49,17 @@ namespace Application.Repository
         }
 
         /// <summary>
+        /// GET user single entity
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<T> GetUserAsync<T>(string id) where T : class
+        {
+            return await dbContext.Set<T>().FindAsync(id);
+        }
+
+        /// <summary>
         /// Update
         /// </summary>
         /// <typeparam name="T"></typeparam>
