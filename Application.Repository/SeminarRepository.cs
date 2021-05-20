@@ -4,6 +4,7 @@ using Application.Repository.Common;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Application.Repository
@@ -34,9 +35,35 @@ namespace Application.Repository
             return await genericRepository.DeleteAsync(mapper.Map<Seminar>(entity));
         }
 
-        public async Task<IEnumerable<SeminarDTO>> GetAllAsync()
+        public async Task<IEnumerable<SeminarDTO>> GetAllAsync(Sorting sorting, Filtering filtering, Paging paging)
         {
-            return mapper.Map<IEnumerable<SeminarDTO>>(await genericRepository.GetAllAsync<Seminar>());
+            var result = mapper.Map<IEnumerable<SeminarDTO>>(await genericRepository.GetAllAsync<Seminar>());
+
+            if (!String.IsNullOrEmpty(filtering.SearchString))
+            {
+                result = result.Where(s => s.Name.ToLower().Contains(filtering.SearchString.ToLower()));
+            }
+
+            if (string.IsNullOrEmpty(sorting.SortBy))
+            {
+                sorting.SortBy = nameof(SeminarDTO.Name);
+            }
+            switch (sorting.SortBy)
+            {
+                case nameof(SeminarDTO.Name):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Name) : result.OrderByDescending(item => item.Name);
+                    break;
+                case nameof(SeminarDTO.Description):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Description) : result.OrderByDescending(item => item.Description);
+                    break;
+                case nameof(SeminarDTO.DateTime):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.DateTime) : result.OrderByDescending(item => item.DateTime);
+                    break;
+                case nameof(SeminarDTO.ParticipantsCount):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.ParticipantsCount) : result.OrderByDescending(item => item.ParticipantsCount);
+                    break;
+            }
+            return result;
         }
 
         public async Task<SeminarDTO> GetAsync(Guid id)

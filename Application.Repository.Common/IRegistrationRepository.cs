@@ -8,7 +8,7 @@ namespace Application.Repository.Common
     public interface IRegistrationRepository
     {
         Task<int> AddAsync(RegistrationDTO entity);
-        Task<IEnumerable<RegistrationDTO>> GetAllAsync();
+        Task<IEnumerable<RegistrationDTO>> GetAllAsync(Sorting sorting);
         Task<RegistrationDTO> GetAsync(Guid id);
         Task<int> UpdateAsync(RegistrationDTO entity);
         Task<int> DeleteAsync(Guid id);

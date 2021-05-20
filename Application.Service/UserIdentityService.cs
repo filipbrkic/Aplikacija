@@ -31,9 +31,9 @@ namespace Application.Service
             return await userIdentityRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(Sorting sorting)
         {
-            return await userIdentityRepository.GetAllAsync();
+            return await userIdentityRepository.GetAllAsync(sorting);
         }
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)

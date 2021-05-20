@@ -1,13 +1,13 @@
 ﻿@model Application.MVC.Models.UserViewModel
 
 @{
-    ViewData["Title"] = "Add";
+    ViewData["Title"] = "Register";
 }
 
-<h1>Add</h1>
+<h1>Register</h1>
 
-<h4>IdentityUserViewModel</h4>
-<hr />
+<h4>Create a new account.</h4>
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Add">
@@ -40,7 +40,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Users">Back to List</a>
 </div>
 
 @section Scripts {

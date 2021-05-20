@@ -4,11 +4,20 @@
     ViewData["Title"] = "Seminar";
 }
 
-<h1>Seminar</h1>
+<h1>List of seminars</h1>
 
 <p>
     <a asp-action="Add">Create New</a>
 </p>
+<form asp-action="Seminar" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-action="Seminar">Back to Full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -51,3 +60,44 @@
 }
     </tbody>
 </table>
+<div>
+    @if (ViewBag.TotalPageCount > 1)
+    {
+        <ul class="pagination">
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <th>
+                    <button style="color:darkcyan;" onclick="paging(1, '@ViewBag.PageSize')">First</button>
+                </th>
+            }
+            @if (ViewBag.CurrentPage > 1)
+            {
+                <th>
+                    <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage - 1, '@ViewBag.PageSize' )">@(@ViewBag.CurrentPage - 1)</button>
+                </th>
+            }
+            <th>
+                <button style="color:gray;">@ViewBag.CurrentPage</button>
+            </th>
+            @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+            {
+                <th>
+                    <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage + 1, @ViewBag.PageSize )">@(@ViewBag.CurrentPage + 1)</button>
+                </th>
+            }
+            @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+            {
+                <th>
+                    <button style="color:darkcyan;" onclick="paging(@ViewBag.TotalPageCount, '@ViewBag.PageSize')">Last</button>
+                </th>
+            }
+        </ul>
+    }
+</div>
+
+<script>
+    var paging = function (page, pageSize)
+        {
+            '@ViewBag.Sorting' === 'asc' ? sorting('@ViewBag.SortBy', 'desc', '@ViewBag.Search', searchString, page, pageSize) : sorting('@ViewBag.SortBy', 'asc', searchString, '@ViewBag.SearchBy', page, pageSize);
+        }
+</script>

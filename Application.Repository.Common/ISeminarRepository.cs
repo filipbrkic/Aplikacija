@@ -8,7 +8,7 @@ namespace Application.Repository.Common
     public interface ISeminarRepository
     {
         Task<int> AddAsync(SeminarDTO entity);
-        Task<IEnumerable<SeminarDTO>> GetAllAsync();
+        Task<IEnumerable<SeminarDTO>> GetAllAsync(Sorting sorting, Filtering filtering, Paging paging);
         Task<SeminarDTO> GetAsync(Guid id);
         Task<int> UpdateAsync(SeminarDTO entity);
         Task<int> DeleteAsync(Guid id);

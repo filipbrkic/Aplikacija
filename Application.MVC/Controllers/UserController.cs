@@ -21,8 +21,7 @@ namespace Application.MVC.Controllers
             userIdentityService = UserIdentityService;
         }
 
-        [HttpGet]
-        public IActionResult Register()
+        public ActionResult SignUp()
         {
             return View();
         }
@@ -32,7 +31,23 @@ namespace Application.MVC.Controllers
         {
             try
             {
-                await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
+                //await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
+                return RedirectToAction(nameof(Users));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // POST: UserIdentityController/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(UserViewModel userViewModel)
+        {
+            try
+            {
+                //await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
                 return RedirectToAction(nameof(Users));
             }
             catch
@@ -43,9 +58,9 @@ namespace Application.MVC.Controllers
 
         // GET: UserIdentityController
         [HttpGet]
-        public async Task<ActionResult> Users()
+        public async Task<ActionResult> Users(string sortOrder, string sortBy)
         {
-            var result = await userIdentityService.GetAllAsync();
+            var result = await userIdentityService.GetAllAsync(new Sorting(sortOrder, sortBy));
             return View(mapper.Map<IEnumerable<UserViewModel>>(result));
         }
 
@@ -54,28 +69,6 @@ namespace Application.MVC.Controllers
         {
             var result = await userIdentityService.GetAsync(id);
             return View();
-        }
-
-        // GET: UserIdentityController/Create
-        public ActionResult Add()
-        {
-            return View();
-        }
-
-        // POST: UserIdentityController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(UserViewModel userViewModel)
-        {
-            try
-            {
-                await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
-                return RedirectToAction(nameof(Users));
-            }
-            catch
-            {
-                return View();
-            }
         }
 
         // GET: UserIdentityController/Edit/5

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Application.MVC.Models
 {
@@ -13,7 +10,10 @@ namespace Application.MVC.Models
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
+        [Display(Name = "Date")]
         public DateTime DateTime { get; set; }
+
+        [Display(Name = "Number of participants")]
         public int ParticipantsCount { get; set; }
     }
 }

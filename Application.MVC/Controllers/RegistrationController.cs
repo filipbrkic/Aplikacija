@@ -23,9 +23,9 @@ namespace Application.MVC.Controllers
 
         // GET: RegistrationController
         [HttpGet("registration", Name = "get-registration")]
-        public async Task<ActionResult> Registration()
+        public async Task<ActionResult> Registration(string sortOrder, string sortBy)
         {
-            var result = await registrationService.GetAllAsync();
+            var result = await registrationService.GetAllAsync(new Sorting(sortOrder, sortBy));
             return View(mapper.Map<IEnumerable<RegistrationViewModel>>(result));
         }
 

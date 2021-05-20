@@ -5,6 +5,7 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Application.Repository
 {
@@ -34,9 +35,38 @@ namespace Application.Repository
             return await genericRepository.DeleteAsync(mapper.Map<Registration>(entity));
         }
 
-        public async Task<IEnumerable<RegistrationDTO>> GetAllAsync()
+        public async Task<IEnumerable<RegistrationDTO>> GetAllAsync(Sorting sorting)
         {
-            return mapper.Map<IEnumerable<RegistrationDTO>>(await genericRepository.GetAllAsync<Registration>());
+           var result = mapper.Map<IEnumerable<RegistrationDTO>>(await genericRepository.GetAllAsync<Registration>());
+            switch(sorting.SortBy)
+            {
+                case nameof(RegistrationDTO.DateTime):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.DateTime) : result.OrderByDescending(item => item.DateTime);
+                    break;
+                case nameof(RegistrationDTO.FirstName):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.FirstName) : result.OrderByDescending(item => item.FirstName);
+                    break;
+                case nameof(RegistrationDTO.LastName):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.LastName) : result.OrderByDescending(item => item.LastName);
+                    break;
+                case nameof(RegistrationDTO.Address):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Address) : result.OrderByDescending(item => item.Address);
+                    break;
+                case nameof(RegistrationDTO.Email):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Email) : result.OrderByDescending(item => item.Email);
+                    break;
+                case nameof(RegistrationDTO.Phone):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Phone) : result.OrderByDescending(item => item.Phone);
+                    break;
+                case nameof(RegistrationDTO.Status):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Status) : result.OrderByDescending(item => item.Status);
+                    break;
+                default:
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.FirstName) : result.OrderByDescending(item => item.FirstName);
+                    break;
+            }
+
+           return result;
         }
 
         public async Task<RegistrationDTO> GetAsync(Guid id)

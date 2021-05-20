@@ -5,6 +5,7 @@ using Application.DAL.Models;
 using Application.Common.Models;
 using AutoMapper;
 using System;
+using System.Linq;
 
 namespace Application.Repository
 {
@@ -35,9 +36,29 @@ namespace Application.Repository
             return await genericRepository.DeleteAsync(mapper.Map<UserIdentity>(entity));
         }
 
-        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync()
+        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(Sorting sorting)
         {
-            return mapper.Map<IEnumerable<UserIdentityDTO>>(await genericRepository.GetAllAsync<UserIdentity>());
+            var result = mapper.Map<IEnumerable<UserIdentityDTO>>(await genericRepository.GetAllAsync<UserIdentity>());
+            switch(sorting.SortBy)
+            {
+                case nameof(UserIdentityDTO.FirstName):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.FirstName) : result.OrderByDescending(item => item.FirstName);
+                    break;
+                case nameof(UserIdentityDTO.LastName):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.LastName) : result.OrderByDescending(item => item.LastName);
+                    break;
+                case nameof(UserIdentityDTO.Password):
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Password) : result.OrderByDescending(item => item.Password);
+                    break;
+                //case "Username":
+                //    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Username) : result.OrderByDescending(item => item.Username);
+                //    break;
+                default:
+                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.FirstName) : result.OrderByDescending(item => item.FirstName);
+                    break;
+            }
+
+            return result;
         }
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)

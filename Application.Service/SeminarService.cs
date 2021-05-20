@@ -31,9 +31,9 @@ namespace Application.Service
             return await seminarRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<SeminarDTO>> GetAllAsync()
+        public async Task<IEnumerable<SeminarDTO>> GetAllAsync(Sorting sorting, Filtering filtering, Paging paging)
         {
-            return await seminarRepository.GetAllAsync();
+            return await seminarRepository.GetAllAsync(sorting, filtering);
         }
 
         public async Task<SeminarDTO> GetAsync(Guid id)

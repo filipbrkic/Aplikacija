@@ -30,9 +30,9 @@ namespace Application.Service
             return await registrationRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<RegistrationDTO>> GetAllAsync()
+        public async Task<IEnumerable<RegistrationDTO>> GetAllAsync(Sorting sorting)
         {
-            return await registrationRepository.GetAllAsync();
+            return await registrationRepository.GetAllAsync(sorting);
         }
 
         public async Task<RegistrationDTO> GetAsync(Guid id)

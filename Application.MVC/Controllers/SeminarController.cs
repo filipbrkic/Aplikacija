@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace Application.MVC.Controllers
 {
@@ -22,10 +23,25 @@ namespace Application.MVC.Controllers
 
         // GET: SeminarController
         [HttpGet("seminar", Name = "get-seminars")]
-        public async Task<ActionResult> Seminar()
+        public async Task<ActionResult> Seminar(string sortOrder, string sortBy, string searchString, int? pageNumber, int? pageSize)
         {
-            var result = await seminarService.GetAllAsync();
-            return View(mapper.Map<IEnumerable<SeminarViewModel>>(result));
+            pageNumber = pageNumber == null ? 1 : pageNumber;
+            pageSize = pageSize == null ? 5 : pageSize;
+
+            ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentSort"] = sortOrder;
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+
+            var paging = new Paging(pageNumber, pageSize);
+
+            var result = await seminarService.GetAllAsync(new Sorting(sortOrder, sortBy), new Filtering(searchString), paging);
+
+            var pageCount = paging.TotalItemsCount / pageSize;
+            ViewBag.TotalPageCount = paging.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+
+                return View(mapper.Map<IEnumerable<SeminarViewModel>>(result));
         }
 
         // GET: SeminarController/Details/5
@@ -101,24 +117,5 @@ namespace Application.MVC.Controllers
                 return View();
             }
         }
-        //DBO - DATABASE OBJECT
-        //DTO - DATA TRANSFER OBJECT
-        //DVO - DATA VIEW OBJECT
-        //REPOSITORY - DBO I DTO - ovisno o tome gdje objekt ide primjeni mapiranje
-        //SERVICE - DTO - nema mapiranja 
-        //CONTROLLER - DTO I DVO - ovisno o tome gdje objekt ide primjeni mapiranje
-        
-        //mapping -> mapper.Map<TDestination>(param)
-        //param je objekt ciji tip treba postati TDestination Tip
-        //primjer. iz kontrollera ide u servis objekt, 
-        //kotroller metoda je primila DVO u treba ga mapirati u DTO jer metoda u servisu treba primiti DTO
-        //mapper.Map<xyzDTO>(xyzDVO)
-
-        //controller -> view - DTO -> DVO
-        //controller -> service - DVO -> DTO
-        //servis -> controller - DTO -> DTO
-        //servis -> repository - DTO -> DTO
-        //repository -> servis - DBO -> DTO
-        //repository -> generic - DTO -> DBO
     }
 }

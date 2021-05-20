@@ -8,7 +8,7 @@ namespace Application.Repository.Common
     public interface IUserIdentityRepository
     {
         Task<int> AddAsync(UserIdentityDTO entity);
-        Task<IEnumerable<UserIdentityDTO>> GetAllAsync();
+        Task<IEnumerable<UserIdentityDTO>> GetAllAsync(Sorting sorting);
         Task<UserIdentityDTO> GetAsync(Guid id);
         Task<int> UpdateAsync(UserIdentityDTO entity);
         Task<int> DeleteAsync(Guid id);
