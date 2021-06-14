@@ -1,12 +1,15 @@
-﻿namespace Application.Common.Models
-{
-    public class Filtering
-    {
-        public Filtering(string searchString)
-        {
-            SearchString = searchString;
-        }
+﻿using Application.Common.Interface;
 
-        public string SearchString { get; set; }
+namespace Application.Common.Models
+{
+    public class Filtering : IFiltering
+    {
+        public Filtering(string searchBy, string search)
+        {
+            SearchBy = searchBy ?? "Name";
+            Search = search ?? "";
+        }
+        public string SearchBy { get; set; }
+        public string Search { get; set; }
     }
 }

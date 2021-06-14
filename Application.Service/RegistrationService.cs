@@ -1,4 +1,5 @@
-﻿using Application.Common.Models;
+﻿using Application.Common.Interface;
+using Application.Common.Models;
 using Application.Repository.Common;
 using Application.Service.Common;
 using System;
@@ -15,6 +16,11 @@ namespace Application.Service
         {
             this.registrationRepository = registrationRepository;
         }
+        public async Task<IEnumerable<RegistrationDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
+        {
+            var models = await registrationRepository.GetAllAsync(sorting, filtering, paging);
+            return models;
+        }
 
         public async Task<int> AddAsync(RegistrationDTO entity)
         {
@@ -28,11 +34,6 @@ namespace Application.Service
         public async Task<int> DeleteAsync(RegistrationDTO entity)
         {
             return await registrationRepository.DeleteAsync(entity);
-        }
-
-        public async Task<IEnumerable<RegistrationDTO>> GetAllAsync(Sorting sorting)
-        {
-            return await registrationRepository.GetAllAsync(sorting);
         }
 
         public async Task<RegistrationDTO> GetAsync(Guid id)

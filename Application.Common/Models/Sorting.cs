@@ -1,6 +1,8 @@
-﻿namespace Application.Common.Models
+﻿using Application.Common.Interface;
+
+namespace Application.Common.Models
 {
-    public class Sorting
+    public class Sorting : ISorting
     {
         public Sorting(string sortOrder, string sortBy)
         {

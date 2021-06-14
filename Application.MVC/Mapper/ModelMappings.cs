@@ -1,4 +1,5 @@
-﻿using Application.Common.Models;
+﻿using Application.Common.Interface;
+using Application.Common.Models;
 using Application.DAL.Models;
 using Application.MVC.Models;
 using AutoMapper;
@@ -15,6 +16,14 @@ namespace Application.MVC.Mapper
             CreateMap<UserIdentityDTO, UserViewModel>().ReverseMap();
             CreateMap<RegistrationDTO, RegistrationViewModel>().ReverseMap();
             CreateMap<SeminarDTO, SeminarViewModel>().ReverseMap();
+
+            CreateMap<Filtering, IFiltering>().ReverseMap();
+            CreateMap<Paging, IPaging>().ReverseMap();
+            CreateMap<Sorting, ISorting>().ReverseMap();
+
+            CreateMap<Seminar, SeminarViewModel>().ReverseMap();
+            CreateMap<Registration, RegistrationViewModel>().ReverseMap();
+            CreateMap<UserIdentity, UserViewModel>().ReverseMap();
         }
     }
 }

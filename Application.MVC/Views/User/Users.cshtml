@@ -5,48 +5,126 @@
 }
 
 <h1>List of employees</h1>
-
 <p>
-    <a asp-action="Register">Create New</a>
+    @using (Html.BeginForm("", "Users", FormMethod.Get))
+    {
+        <div>
+            <b>Search by:&nbsp;&nbsp;</b> @Html.RadioButton("searchBy", "FirstName", true)<text> First Name&nbsp;&nbsp;</text>
+            @Html.RadioButton("searchBy", "LastName") <text> Last Name </text><br />
+            @Html.TextBox("search")<input type="submit" value="Search" />
+        </div>
+    }
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Username)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Username)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-            </td>
-        </tr>
+@if (Model != null)
+{
+    <p>
+        <a asp-action="Register">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <button style="color:darkcyan;" onclick="sorting('FirstName', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy', @ViewBag.CurrentPage, @ViewBag.PageSize)">@Html.DisplayNameFor(model => model.FirstName)</button>
+                </th>
+                <th>
+                    <button style="color:darkcyan;" onclick="sorting('LastName', '@ViewBag.Sorting', '@ViewBag.Search', '@ViewBag.SearchBy', @ViewBag.CurrentPage, @ViewBag.PageSize)">@Html.DisplayNameFor(model => model.LastName)</button>
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Password)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Password)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <div>
+        @if (ViewBag.TotalPageCount > 1)
+        {
+            <ul class="paging">
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(1, '@ViewBag.PageSize')">First</button>
+                    </th>
+                }
+                @if (ViewBag.CurrentPage > 1)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage - 1, '@ViewBag.PageSize' )">@(@ViewBag.CurrentPage - 1)</button>
+                    </th>
+                }
+                <th>
+                    <button style="color:gray;">@ViewBag.CurrentPage</button>
+                </th>
+                @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.CurrentPage + 1, @ViewBag.PageSize )">@(@ViewBag.CurrentPage + 1)</button>
+                    </th>
+                }
+                @if (ViewBag.CurrentPage < ViewBag.TotalPageCount)
+                {
+                    <th>
+                        <button style="color:darkcyan;" onclick="paging(@ViewBag.TotalPageCount, '@ViewBag.PageSize')">Last</button>
+                    </th>
+                }
+            </ul>
+        }
+    </div>
+    <script>
+        var sorting = function (sortBy, sortOrder, search, searchBy, pageNumber, pageSize) {
+            if (sortOrder == "desc")
+            {
+                if (sortBy == "FirstName")
+                {
+                    window.location.replace("https://localhost:44353/Users?" + "sortBy=FirstName&sortOrder=asc" + ("&pageNumber=" + pageNumber) + ("&pageSize=" + pageSize) + (searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+                else
+                {
+                    window.location.replace("https://localhost:44353/Users?" + "sortBy=LastName&sortOrder=asc" + ("&pageNumber=" + pageNumber) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+            }
+            else {
+                if (sortBy == "FirstName")
+                {
+                    window.location.replace("https://localhost:44353/Users?" + "sortBy=FirstName&sortOrder=desc" + ("&pageNumber=" + pageNumber) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+                else
+                {
+                    window.location.replace("https://localhost:44353/Users?" + "sortBy=LastName&sortOrder=desc" + ("&pageNumber=" + pageNumber) + ("&pageSize=" + pageSize) +(searchBy ? "&searchBy=" + searchBy : "") + (search ? "&search=" + search : ""));
+                }
+            };
+        };
+
+    var paging = function (pageNumber, pageSize)
+        {
+        '@ViewBag.Sorting' === 'asc' ? sorting('@ViewBag.SortBy', 'desc', '@ViewBag.Search', '@ViewBag.SearchBy', pageNumber, pageSize) : sorting('@ViewBag.SortBy', 'asc', '@ViewBag.Search', '@ViewBag.SearchBy', pageNumber, pageSize);
+        }
+    </script>
 }
-    </tbody>
-</table>

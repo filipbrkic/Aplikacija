@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Application.Repository.Common
 {
     public interface IGenericRepository
     {
+        Task<(IEnumerable<T>, int)> GetAllAsync<T>(Expression<Func<T, bool>> match, Expression<Func<T, string>> orderByExpression, int take, int skip, string sortType) where T : class;
         Task<int> AddAsync<T>(T entity) where T : class;
-        Task<IEnumerable<T>> GetAllAsync<T>() where T : class;
         Task<T> GetAsync<T>(Guid id) where T : class;
         Task<T> GetUserAsync<T>(string id) where T : class;
         Task<int> UpdateAsync<T>(T entity) where T : class;

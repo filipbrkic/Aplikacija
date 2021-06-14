@@ -56,11 +56,25 @@ namespace Application.MVC.Controllers
             }
         }
 
-        // GET: UserIdentityController
-        [HttpGet]
-        public async Task<ActionResult> Users(string sortOrder, string sortBy)
+        // GET: SeminarController
+        [HttpGet("Users", Name = "get-users")]
+        public async Task<ActionResult> Users(string sortOrder, string sortBy, string searchBy, string search, int? pageNumber, int? pageSize)
         {
-            var result = await userIdentityService.GetAllAsync(new Sorting(sortOrder, sortBy));
+            var paging = new Paging(pageNumber, pageSize);
+
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "asc" : sortOrder;
+            ViewBag.Sorting = sortOrder;
+            ViewBag.SortBy = sortBy;
+            ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
+            ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
+            ViewBag.CurrentPage = paging.PageNumber;
+            ViewBag.PageSize = paging.PageSize;
+
+            var result = await userIdentityService.GetAllAsync(new Sorting(sortOrder, sortBy), new Filtering(searchBy, search), paging);
+
+            var pageCount = paging.TotalItemsCount / paging.PageSize;
+            ViewBag.TotalPageCount = paging.TotalItemsCount % paging.PageSize == 0 ? pageCount : pageCount + 1;
+
             return View(mapper.Map<IEnumerable<UserViewModel>>(result));
         }
 

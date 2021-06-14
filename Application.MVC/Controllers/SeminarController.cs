@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
+using X.PagedList;
 
 namespace Application.MVC.Controllers
 {
@@ -22,26 +22,25 @@ namespace Application.MVC.Controllers
         }
 
         // GET: SeminarController
-        [HttpGet("seminar", Name = "get-seminars")]
-        public async Task<ActionResult> Seminar(string sortOrder, string sortBy, string searchString, int? pageNumber, int? pageSize)
+        [HttpGet("Seminar", Name = "get-seminars")]
+        public async Task<ActionResult> Seminar(string sortOrder, string sortBy, string searchBy, string search, int? pageNumber, int? pageSize)
         {
-            pageNumber = pageNumber == null ? 1 : pageNumber;
-            pageSize = pageSize == null ? 5 : pageSize;
-
-            ViewData["CurrentFilter"] = searchString;
-            ViewData["CurrentSort"] = sortOrder;
-
-            ViewBag.CurrentPage = pageNumber;
-            ViewBag.PageSize = pageSize;
-
             var paging = new Paging(pageNumber, pageSize);
 
-            var result = await seminarService.GetAllAsync(new Sorting(sortOrder, sortBy), new Filtering(searchString), paging);
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "asc" : sortOrder;
+            ViewBag.Sorting = sortOrder;
+            ViewBag.SortBy = sortBy;
+            ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
+            ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
+            ViewBag.CurrentPage = paging.PageNumber;
+            ViewBag.PageSize = paging.PageSize;
 
-            var pageCount = paging.TotalItemsCount / pageSize;
-            ViewBag.TotalPageCount = paging.TotalItemsCount % pageSize == 0 ? pageCount : pageCount + 1;
+            var result = await seminarService.GetAllAsync(new Sorting(sortOrder, sortBy), new Filtering(searchBy, search), paging);
 
-                return View(mapper.Map<IEnumerable<SeminarViewModel>>(result));
+            var pageCount = paging.TotalItemsCount / paging.PageSize;
+            ViewBag.TotalPageCount = paging.TotalItemsCount % paging.PageSize == 0 ? pageCount : pageCount + 1;
+
+            return View(mapper.Map<IEnumerable<SeminarViewModel>>(result));
         }
 
         // GET: SeminarController/Details/5

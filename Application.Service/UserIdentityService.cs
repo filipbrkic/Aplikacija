@@ -1,4 +1,5 @@
-﻿using Application.Common.Models;
+﻿using Application.Common.Interface;
+using Application.Common.Models;
 using Application.Repository.Common;
 using Application.Service.Common;
 using System;
@@ -30,10 +31,10 @@ namespace Application.Service
         {
             return await userIdentityRepository.DeleteAsync(entity);
         }
-
-        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(Sorting sorting)
+        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
         {
-            return await userIdentityRepository.GetAllAsync(sorting);
+            var models = await userIdentityRepository.GetAllAsync(sorting, filtering, paging);
+            return models;
         }
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)

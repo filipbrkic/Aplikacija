@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Application.Repository
@@ -14,6 +16,14 @@ namespace Application.Repository
         {
             this.dbContext = dbContext;
         }
+        public async Task<(IEnumerable<T>, int)> GetAllAsync<T>(Expression<Func<T, bool>> match, Expression<Func<T, string>> orderByExpression, int take, int skip, string sortOrder) where T : class
+        {
+            var seminar = sortOrder == "asc" ?
+                await dbContext.Set<T>().AsNoTracking().Where(match).OrderBy(orderByExpression).Skip(skip).Take(take).ToListAsync() :
+                await dbContext.Set<T>().AsNoTracking().Where(match).OrderByDescending(orderByExpression).Skip(skip).Take(take).ToListAsync();
+            var seminarsCount = dbContext.Set<T>().Where(match).AsNoTracking().Count();
+            return (seminar, seminarsCount);
+        }
 
         /// <summary>
         /// Create entity
@@ -25,16 +35,6 @@ namespace Application.Repository
         {
             dbContext.Set<T>().Add(entity);
             return await dbContext.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// GET list entity
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public async Task<IEnumerable<T>> GetAllAsync<T>() where T : class
-        {
-           return await dbContext.Set<T>().ToListAsync();
         }
 
         /// <summary>

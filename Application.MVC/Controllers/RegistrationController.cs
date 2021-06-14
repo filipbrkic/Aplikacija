@@ -22,10 +22,24 @@ namespace Application.MVC.Controllers
         }
 
         // GET: RegistrationController
-        [HttpGet("registration", Name = "get-registration")]
-        public async Task<ActionResult> Registration(string sortOrder, string sortBy)
+        [HttpGet("Registration", Name = "get-registration")]
+        public async Task<ActionResult> Registration(string sortOrder, string sortBy, string searchBy, string search, int? pageNumber, int? pageSize)
         {
-            var result = await registrationService.GetAllAsync(new Sorting(sortOrder, sortBy));
+            var paging = new Paging(pageNumber, pageSize);
+
+            sortOrder = string.IsNullOrEmpty(sortOrder) ? "asc" : sortOrder;
+            ViewBag.Sorting = sortOrder;
+            ViewBag.SortBy = sortBy;
+            ViewBag.Search = !string.IsNullOrEmpty(search) ? search : "";
+            ViewBag.SearchBy = !string.IsNullOrEmpty(searchBy) ? searchBy : "Name";
+            ViewBag.CurrentPage = paging.PageNumber;
+            ViewBag.PageSize = paging.PageSize;
+
+            var result = await registrationService.GetAllAsync(new Sorting(sortOrder, sortBy), new Filtering(searchBy, search), paging);
+
+            var pageCount = paging.TotalItemsCount / paging.PageSize;
+            ViewBag.TotalPageCount = paging.TotalItemsCount % paging.PageSize == 0 ? pageCount : pageCount + 1;
+
             return View(mapper.Map<IEnumerable<RegistrationViewModel>>(result));
         }
 

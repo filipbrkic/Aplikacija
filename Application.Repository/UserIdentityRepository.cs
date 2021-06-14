@@ -6,6 +6,8 @@ using Application.Common.Models;
 using AutoMapper;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
+using Application.Common.Interface;
 
 namespace Application.Repository
 {
@@ -36,29 +38,32 @@ namespace Application.Repository
             return await genericRepository.DeleteAsync(mapper.Map<UserIdentity>(entity));
         }
 
-        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(Sorting sorting)
+        public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
         {
-            var result = mapper.Map<IEnumerable<UserIdentityDTO>>(await genericRepository.GetAllAsync<UserIdentity>());
-            switch(sorting.SortBy)
+            var result = await genericRepository.GetAllAsync<UserIdentity>(CreateFilterExpression(filtering.Search, filtering.SearchBy), CreateOrderByExpression(sorting.SortBy), paging.PageSize, paging.Skip, sorting.SortOrder);
+            paging.TotalItemsCount = result.Item2;
+            return mapper.Map<IEnumerable<UserIdentityDTO>>(result.Item1);
+        }
+        private static Expression<Func<UserIdentity, bool>> CreateFilterExpression(string search, string searchBy)
+        {
+            if (!string.IsNullOrEmpty(search))
             {
-                case nameof(UserIdentityDTO.FirstName):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.FirstName) : result.OrderByDescending(item => item.FirstName);
-                    break;
-                case nameof(UserIdentityDTO.LastName):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.LastName) : result.OrderByDescending(item => item.LastName);
-                    break;
-                case nameof(UserIdentityDTO.Password):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Password) : result.OrderByDescending(item => item.Password);
-                    break;
-                //case "Username":
-                //    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Username) : result.OrderByDescending(item => item.Username);
-                //    break;
-                default:
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.FirstName) : result.OrderByDescending(item => item.FirstName);
-                    break;
+                return v => searchBy == "Name" ?
+                v.FirstName.IndexOf(search) > -1 :
+                v.LastName.IndexOf(search) > -1;
             }
-
-            return result;
+            return x => x.FirstName.StartsWith(String.Empty);
+        }
+        private static Expression<Func<UserIdentity, string>> CreateOrderByExpression(string sortBy)
+        {
+            if (sortBy == "Name" || sortBy == null)
+            {
+                return v => v.FirstName;
+            }
+            else
+            {
+                return v => v.LastName;
+            }
         }
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)

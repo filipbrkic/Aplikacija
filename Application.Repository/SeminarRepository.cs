@@ -1,10 +1,12 @@
-﻿using Application.Common.Models;
+﻿using Application.Common.Interface;
+using Application.Common.Models;
 using Application.DAL.Models;
 using Application.Repository.Common;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Application.Repository
@@ -18,6 +20,33 @@ namespace Application.Repository
         {
             this.mapper = mapper;
             this.genericRepository = genericRepository;
+        }
+        public async Task<IEnumerable<SeminarDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
+        {
+            var result = await genericRepository.GetAllAsync<Seminar>(CreateFilterExpression(filtering.Search, filtering.SearchBy), CreateOrderByExpression(sorting.SortBy), paging.PageSize, paging.Skip, sorting.SortOrder);
+            paging.TotalItemsCount = result.Item2;
+            return mapper.Map<IEnumerable<SeminarDTO>>(result.Item1);
+        }
+        private static Expression<Func<Seminar, bool>> CreateFilterExpression(string search, string searchBy)
+        {
+            if (!string.IsNullOrEmpty(search))
+            {
+                return v => searchBy == "Name" ?
+                v.Name.IndexOf(search) > -1 :
+                v.Description.IndexOf(search) > -1;
+            }
+            return x => x.Name.StartsWith(String.Empty);
+        }
+        private static Expression<Func<Seminar, string>> CreateOrderByExpression(string sortBy)
+        {
+            if (sortBy == "Name" || sortBy == null)
+            {
+                return v => v.Name;
+            }
+            else
+            {
+                return v => v.Description;
+            }
         }
 
         public async Task<int> AddAsync(SeminarDTO entity)
@@ -33,37 +62,6 @@ namespace Application.Repository
         public async Task<int> DeleteAsync(SeminarDTO entity)
         {
             return await genericRepository.DeleteAsync(mapper.Map<Seminar>(entity));
-        }
-
-        public async Task<IEnumerable<SeminarDTO>> GetAllAsync(Sorting sorting, Filtering filtering, Paging paging)
-        {
-            var result = mapper.Map<IEnumerable<SeminarDTO>>(await genericRepository.GetAllAsync<Seminar>());
-
-            if (!String.IsNullOrEmpty(filtering.SearchString))
-            {
-                result = result.Where(s => s.Name.ToLower().Contains(filtering.SearchString.ToLower()));
-            }
-
-            if (string.IsNullOrEmpty(sorting.SortBy))
-            {
-                sorting.SortBy = nameof(SeminarDTO.Name);
-            }
-            switch (sorting.SortBy)
-            {
-                case nameof(SeminarDTO.Name):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Name) : result.OrderByDescending(item => item.Name);
-                    break;
-                case nameof(SeminarDTO.Description):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.Description) : result.OrderByDescending(item => item.Description);
-                    break;
-                case nameof(SeminarDTO.DateTime):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.DateTime) : result.OrderByDescending(item => item.DateTime);
-                    break;
-                case nameof(SeminarDTO.ParticipantsCount):
-                    result = sorting.SortOrder.Equals("asc") ? result.OrderBy(item => item.ParticipantsCount) : result.OrderByDescending(item => item.ParticipantsCount);
-                    break;
-            }
-            return result;
         }
 
         public async Task<SeminarDTO> GetAsync(Guid id)
