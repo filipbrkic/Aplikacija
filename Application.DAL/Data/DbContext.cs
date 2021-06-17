@@ -13,6 +13,7 @@ namespace Application.DAL.Data
 
         public DbSet<Registration> Registrations { get; set; }
         public DbSet<Seminar> Seminars { get; set; }
+        public DbSet<UserIdentity> UserIdentities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

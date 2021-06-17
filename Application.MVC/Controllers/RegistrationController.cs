@@ -64,7 +64,6 @@ namespace Application.MVC.Controllers
         {
             try
             {
-                //registrationViewModel.SeminarId = (Guid)ViewBag.SeminarId;
                 await registrationService.AddAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
                 return RedirectToAction(nameof(Registration));
             }
@@ -78,7 +77,7 @@ namespace Application.MVC.Controllers
         public async Task<ActionResult> Edit(Guid id)
         {
             var result = await registrationService.GetAsync(id);
-            return View();
+            return View(mapper.Map<RegistrationViewModel>(result));
         }
 
         // POST: RegistrationController/Edit/5
@@ -97,9 +96,9 @@ namespace Application.MVC.Controllers
         }
 
         // GET: RegistrationController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            return View();
+            return View(mapper.Map<RegistrationViewModel>(await registrationService.GetAsync(id)));
         }
 
         // POST: RegistrationController/Delete/5

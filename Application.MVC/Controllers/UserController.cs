@@ -89,7 +89,7 @@ namespace Application.MVC.Controllers
         public async Task<ActionResult> Edit(Guid id)
         {
             var result = await userIdentityService.GetAsync(id);
-            return View();
+            return View(mapper.Map<UserViewModel>(result));
         }
 
         // POST: UserIdentityController/Edit/5
@@ -108,9 +108,9 @@ namespace Application.MVC.Controllers
         }
 
         // GET: UserIdentityController/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(Guid id)
         {
-            return View();
+            return View(mapper.Map<UserViewModel>(await userIdentityService.GetAsync(id)));
         }
 
         // POST: UserIdentityController/Delete/5

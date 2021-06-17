@@ -23,11 +23,11 @@ namespace Application.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<Application.DAL.Data.DbContext>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<Application.DAL.Data.DbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddDefaultIdentity<UserIdentity>(options =>
-            //options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<Application.DAL.Data.DbContext>();
+            services.AddDefaultIdentity<UserIdentity>(options =>
+            options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<Application.DAL.Data.DbContext>();
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
