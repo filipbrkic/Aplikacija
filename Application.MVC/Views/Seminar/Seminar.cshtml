@@ -13,7 +13,7 @@
             <b>Search by:&nbsp;&nbsp;</b> @Html.RadioButton("searchBy", "Name", true)<text> Name&nbsp;&nbsp;</text>
             @Html.RadioButton("searchBy", "Description") <text> Description </text><br />
             @Html.TextBox("search")<input type="submit" value="Search" />
-            <button style="float:right; background-color:darkcyan; border:0pt" class="btn btn-primary"><a asp-action="Add" style="color:white">Add Make</a></button>
+            <button style="float:right; background-color:darkcyan; border:0pt" class="btn btn-primary"><a asp-action="Add" style="color:white">Add Seminar</a></button>
         </div>
     }
 </p>
@@ -54,7 +54,10 @@
                         @Html.DisplayFor(modelItem => item.ParticipantsCount)
                     </td>
                     <td>
-                        @Html.ActionLink("Register", "Add", "Registration", new { seminarId = item.Id }) |
+                        @if (item.ParticipantsCount < 5)
+                        {
+                            @Html.ActionLink("Register", "Add", "Registration", new { seminarId = item.Id }) <text> |</text>
+                        }
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                     </td>

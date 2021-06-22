@@ -68,12 +68,15 @@ namespace Application.Repository
 
         public async Task<UserIdentityDTO> GetAsync(Guid id)
         {
-            return mapper.Map<UserIdentityDTO>(await genericRepository.GetUserAsync<UserIdentity>(id.ToString()));
+            return mapper.Map<UserIdentityDTO>(await genericRepository.GetUserAsync<UserIdentity>(id));
         }
 
         public async Task<int> UpdateAsync(UserIdentityDTO entity)
         {
-            return await genericRepository.UpdateAsync(mapper.Map<UserIdentity>(entity));
+            var user = await genericRepository.GetUserAsync<UserIdentity>(entity.Id);
+            user.FirstName = entity.FirstName;
+            user.LastName = entity.LastName;
+            return await genericRepository.UpdateAsync(user);
         }
     }
 }

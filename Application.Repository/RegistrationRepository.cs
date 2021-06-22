@@ -72,7 +72,7 @@ namespace Application.Repository
 
         public async Task<int> UpdateAsync(RegistrationDTO entity)
         {
-            return await genericRepository.UpdateAsync(entity);
+            return await genericRepository.UpdateAsync(mapper.Map<Registration>(entity));
         }
     }
 }

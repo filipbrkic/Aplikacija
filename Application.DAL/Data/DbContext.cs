@@ -1,10 +1,12 @@
 ﻿using Application.DAL.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace Application.DAL.Data
 {
-    public class DbContext : IdentityDbContext<UserIdentity>
+    public class DbContext : IdentityDbContext<UserIdentity, IdentityRole<Guid>, Guid>
     {
         public DbContext(DbContextOptions<DbContext> options)
             : base(options)
@@ -22,4 +24,5 @@ namespace Application.DAL.Data
             base.OnModelCreating(modelBuilder);
         }
     }
+
 }

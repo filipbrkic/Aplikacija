@@ -29,7 +29,7 @@ namespace Application.Service
 
         public async Task<int> DeleteAsync(UserIdentityDTO entity)
         {
-            return await userIdentityRepository.DeleteAsync(entity);
+            return await userIdentityRepository.DeleteAsync(entity.Id);
         }
         public async Task<IEnumerable<UserIdentityDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
         {

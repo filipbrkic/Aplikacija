@@ -11,10 +11,12 @@ namespace Application.Service
     public class RegistrationService : IRegistrationService
     {
         private readonly IRegistrationRepository registrationRepository;
+        private readonly ISeminarRepository seminarRepository;
 
-        public RegistrationService(IRegistrationRepository registrationRepository)
+        public RegistrationService(IRegistrationRepository registrationRepository, ISeminarRepository seminarRepository)
         {
             this.registrationRepository = registrationRepository;
+            this.seminarRepository = seminarRepository;
         }
         public async Task<IEnumerable<RegistrationDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
         {
@@ -24,6 +26,12 @@ namespace Application.Service
 
         public async Task<int> AddAsync(RegistrationDTO entity)
         {
+            if(entity.Status)
+            {
+                var seminar = await seminarRepository.GetAsync(entity.SeminarId);
+                seminar.ParticipantsCount++;
+                await seminarRepository.UpdateAsync(seminar);
+            }
             return await registrationRepository.AddAsync(entity);
         }
 
@@ -43,6 +51,22 @@ namespace Application.Service
 
         public async Task<int> UpdateAsync(RegistrationDTO entity)
         {
+            var registration = await registrationRepository.GetAsync(entity.Id);
+            if(entity.Status != registration.Status)
+            {
+                if(entity.Status)
+                {
+                    var seminar = await seminarRepository.GetAsync(entity.SeminarId);
+                    seminar.ParticipantsCount++;
+                    await seminarRepository.UpdateAsync(seminar);
+                }
+                else
+                {
+                    var seminar = await seminarRepository.GetAsync(entity.SeminarId);
+                    seminar.ParticipantsCount--;
+                    await seminarRepository.UpdateAsync(seminar);
+                }
+            }
             return await registrationRepository.UpdateAsync(entity);
         }
     }

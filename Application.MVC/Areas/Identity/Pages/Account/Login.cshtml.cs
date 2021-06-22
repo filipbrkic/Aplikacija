@@ -42,7 +42,7 @@ namespace Application.MVC.Areas.Identity.Pages.Account
         [TempData]
         public string ErrorMessage { get; set; }
 
-        public class InputModel : UserViewModel
+        public class InputModel
         {
             [Required]
             [EmailAddress]

@@ -15,48 +15,13 @@ namespace Application.MVC.Controllers
         private readonly IMapper mapper;
         private readonly IUserIdentityService userIdentityService;
 
-        public UserController(IMapper mapper, IUserIdentityService UserIdentityService)
+        public UserController(IMapper mapper, IUserIdentityService userIdentityService)
         {
             this.mapper = mapper;
-            userIdentityService = UserIdentityService;
+            this.userIdentityService = userIdentityService;
         }
 
-        public ActionResult SignUp()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Register(UserViewModel userViewModel)
-        {
-            try
-            {
-                //await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
-                return RedirectToAction(nameof(Users));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // POST: UserIdentityController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(UserViewModel userViewModel)
-        {
-            try
-            {
-                //await userIdentityService.AddAsync(mapper.Map<UserIdentityDTO>(userViewModel));
-                return RedirectToAction(nameof(Users));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: SeminarController
+        // GET: UserController
         [HttpGet("Users", Name = "get-users")]
         public async Task<ActionResult> Users(string sortOrder, string sortBy, string searchBy, string search, int? pageNumber, int? pageSize)
         {
@@ -95,10 +60,11 @@ namespace Application.MVC.Controllers
         // POST: UserIdentityController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(UserViewModel userViewModel)
         {
             try
             {
+                await userIdentityService.UpdateAsync(mapper.Map<UserIdentityDTO>(userViewModel));
                 return RedirectToAction(nameof(Users));
             }
             catch

@@ -66,8 +66,9 @@ namespace Application.MVC.Controllers
                 await seminarService.AddAsync(mapper.Map<SeminarDTO>(seminarViewModel));
                 return RedirectToAction(nameof(Seminar));
             }
-            catch
+            catch(Exception ex)
             {
+                var test = ex;
                 return View();
             }
         }

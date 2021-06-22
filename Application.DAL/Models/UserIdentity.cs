@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Application.DAL.Models
 {
-    public class UserIdentity : IdentityUser
+    public class UserIdentity : IdentityUser<Guid>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

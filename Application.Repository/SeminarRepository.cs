@@ -71,6 +71,7 @@ namespace Application.Repository
 
         public async Task<int> UpdateAsync(SeminarDTO entity)
         {
+            Expression<Func<Seminar, Guid>> test = x => entity.Id;
             return await genericRepository.UpdateAsync(mapper.Map<Seminar>(entity));
         }
     }

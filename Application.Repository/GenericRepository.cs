@@ -1,4 +1,6 @@
-﻿using Application.Repository.Common;
+﻿using Application.DAL.Models;
+using Application.Repository.Common;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace Application.Repository
         private readonly DAL.Data.DbContext dbContext;
 
         public GenericRepository(DAL.Data.DbContext dbContext)
-        {
+        { 
             this.dbContext = dbContext;
         }
         public async Task<(IEnumerable<T>, int)> GetAllAsync<T>(Expression<Func<T, bool>> match, Expression<Func<T, string>> orderByExpression, int take, int skip, string sortOrder) where T : class
@@ -44,7 +46,7 @@ namespace Application.Repository
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<T> GetAsync<T>(Guid id) where T : class
-        {
+        { 
             return await dbContext.Set<T>().FindAsync(id);
         }
 
@@ -54,7 +56,7 @@ namespace Application.Repository
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<T> GetUserAsync<T>(string id) where T : class
+        public async Task<T> GetUserAsync<T>(Guid id) where T : class
         {
             return await dbContext.Set<T>().FindAsync(id);
         }

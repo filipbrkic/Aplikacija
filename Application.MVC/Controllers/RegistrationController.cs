@@ -67,9 +67,10 @@ namespace Application.MVC.Controllers
                 await registrationService.AddAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
                 return RedirectToAction(nameof(Registration));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                var test = ex;
+                return RedirectToAction(nameof(Registration));
             }
         }
 
@@ -83,10 +84,11 @@ namespace Application.MVC.Controllers
         // POST: RegistrationController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(RegistrationViewModel registrationViewModel)
         {
             try
             {
+                await registrationService.UpdateAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
                 return RedirectToAction(nameof(Registration));
             }
             catch
