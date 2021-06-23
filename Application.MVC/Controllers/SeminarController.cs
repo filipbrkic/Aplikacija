@@ -2,6 +2,7 @@
 using Application.MVC.Models;
 using Application.Service.Common;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -50,6 +51,7 @@ namespace Application.MVC.Controllers
             return View();
         }
 
+        [Authorize]
         // GET: Seminar/Add
         public ActionResult Add()
         {
@@ -73,6 +75,7 @@ namespace Application.MVC.Controllers
             }
         }
 
+        [Authorize]
         // GET: SeminarController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
@@ -96,6 +99,7 @@ namespace Application.MVC.Controllers
             }
         }
 
+        [Authorize]
         // GET: SeminarController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {

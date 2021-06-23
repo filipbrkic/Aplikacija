@@ -2,6 +2,7 @@
 using Application.MVC.Models;
 using Application.Service.Common;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,6 +22,7 @@ namespace Application.MVC.Controllers
             this.registrationService = registrationService;
         }
 
+        [Authorize]
         // GET: RegistrationController
         [HttpGet("Registration", Name = "get-registration")]
         public async Task<ActionResult> Registration(string sortOrder, string sortBy, string searchBy, string search, int? pageNumber, int? pageSize)
@@ -74,6 +76,7 @@ namespace Application.MVC.Controllers
             }
         }
 
+        [Authorize]
         // GET: RegistrationController/Edit/5
         public async Task<ActionResult> Edit(Guid id)
         {
@@ -97,6 +100,7 @@ namespace Application.MVC.Controllers
             }
         }
 
+        [Authorize]
         // GET: RegistrationController/Delete/5
         public async Task<ActionResult> Delete(Guid id)
         {
