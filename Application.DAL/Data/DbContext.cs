@@ -19,10 +19,8 @@ namespace Application.DAL.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Registration>().ToTable("Registration");
-            modelBuilder.Entity<Seminar>().ToTable("Seminar");
+            modelBuilder.Entity<Registration>().HasOne(o => o.Seminar).WithMany(m => m.Registrations);
             base.OnModelCreating(modelBuilder);
         }
     }
-
 }

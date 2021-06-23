@@ -26,12 +26,12 @@ namespace Application.Service
 
         public async Task<int> AddAsync(RegistrationDTO entity)
         {
-            if(entity.Status)
-            {
-                var seminar = await seminarRepository.GetAsync(entity.SeminarId);
-                seminar.ParticipantsCount++;
-                await seminarRepository.UpdateAsync(seminar);
-            }
+            //if(entity.Status)
+            //{
+            //    var seminar = await seminarRepository.GetAsync(entity.SeminarId);
+            //    seminar.ParticipantsCount++;
+            //    await seminarRepository.UpdateAsync(seminar);
+            //}
             return await registrationRepository.AddAsync(entity);
         }
 

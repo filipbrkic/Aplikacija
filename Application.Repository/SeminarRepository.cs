@@ -23,9 +23,16 @@ namespace Application.Repository
         }
         public async Task<IEnumerable<SeminarDTO>> GetAllAsync(ISorting sorting, IFiltering filtering, IPaging paging)
         {
-            var result = await genericRepository.GetAllAsync<Seminar>(CreateFilterExpression(filtering.Search, filtering.SearchBy), CreateOrderByExpression(sorting.SortBy), paging.PageSize, paging.Skip, sorting.SortOrder);
+            var result = await genericRepository.GetAllSeminarsAsync<Seminar>(CreateFilterExpression(filtering.Search, filtering.SearchBy), CreateOrderByExpression(sorting.SortBy), paging.PageSize, paging.Skip, sorting.SortOrder);
             paging.TotalItemsCount = result.Item2;
-            return mapper.Map<IEnumerable<SeminarDTO>>(result.Item1);
+            var seminars = new List<SeminarDTO>();
+            foreach (Seminar seminar in result.Item1)
+            {
+                var seminarDTO = mapper.Map<SeminarDTO>(seminar);
+                seminarDTO.ParticipantsCount = seminar.Registrations.Count;
+                seminars.Add(seminarDTO);
+            }
+            return seminars; 
         }
         private static Expression<Func<Seminar, bool>> CreateFilterExpression(string search, string searchBy)
         {

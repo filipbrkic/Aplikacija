@@ -16,10 +16,7 @@ namespace Application.DAL.Models
 
         [DataType(DataType.Date)]
         public DateTime DateTime { get; set; }
-
-        public int ParticipantsCount { get; set; }
-
         public UserIdentity User { get; set; }
-        public virtual ICollection<Registration> Registrations { get; set; }
+        public ICollection<Registration> Registrations { get; set; }
     }
 }

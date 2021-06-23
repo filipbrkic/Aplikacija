@@ -26,6 +26,14 @@ namespace Application.Repository
             var seminarsCount = dbContext.Set<T>().Where(match).AsNoTracking().Count();
             return (seminar, seminarsCount);
         }
+        public async Task<(IEnumerable<T>, int)> GetAllSeminarsAsync<T>(Expression<Func<T, bool>> match, Expression<Func<T, string>> orderByExpression, int take, int skip, string sortOrder) where T : class
+        {
+            var seminar = sortOrder == "asc" ?
+                await dbContext.Set<T>().AsNoTracking().Where(match).Include("Registrations").OrderBy(orderByExpression).Skip(skip).Take(take).ToListAsync() :
+                await dbContext.Set<T>().AsNoTracking().Where(match).Include("Registrations").OrderByDescending(orderByExpression).Skip(skip).Take(take).ToListAsync();
+            var seminarsCount = dbContext.Set<T>().Where(match).AsNoTracking().Count();
+            return (seminar, seminarsCount);
+        }
 
         /// <summary>
         /// Create entity
@@ -35,7 +43,7 @@ namespace Application.Repository
         /// <returns></returns>
         public async Task<int> AddAsync<T>(T entity) where T : class
         {
-            dbContext.Set<T>().Add(entity);
+            await dbContext.Set<T>().AddAsync(entity);
             return await dbContext.SaveChangesAsync();
         }
 
