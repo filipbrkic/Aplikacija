@@ -2,6 +2,7 @@
 using Application.MVC.Models;
 using Application.Service.Common;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.MVC.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IMapper mapper;
