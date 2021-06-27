@@ -94,8 +94,9 @@ namespace Application.MVC.Controllers
                 await registrationService.UpdateAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
                 return RedirectToAction(nameof(Registration));
             }
-            catch
+            catch(Exception ex)
             {
+                var test = ex;
                 return View();
             }
         }
