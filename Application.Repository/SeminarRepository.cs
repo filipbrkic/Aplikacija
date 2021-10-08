@@ -29,10 +29,10 @@ namespace Application.Repository
             foreach (Seminar seminar in result.Item1)
             {
                 var seminarDTO = mapper.Map<SeminarDTO>(seminar);
-                seminarDTO.ParticipantsCount = seminar.Registrations.Count;
+                seminarDTO.ParticipantsCount = seminar.Registrations.Where(r => r.Status == true).Count();
                 seminars.Add(seminarDTO);
             }
-            return seminars; 
+            return seminars;
         }
         private static Expression<Func<Seminar, bool>> CreateFilterExpression(string search, string searchBy)
         {
