@@ -67,7 +67,7 @@ namespace Application.MVC.Controllers
             try
             {
                 await registrationService.AddAsync(mapper.Map<RegistrationDTO>(registrationViewModel));
-                return RedirectToAction(nameof(Registration));
+                return RedirectToAction("Seminar", "Seminar");
             }
             catch(Exception ex)
             {
